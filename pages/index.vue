@@ -8,7 +8,7 @@
 export default {
     methods: {
         waitlistRedirect() {
-            window.location.href = '/waitlist'
+            window.location.href = '/join'
         }
     }
 }
