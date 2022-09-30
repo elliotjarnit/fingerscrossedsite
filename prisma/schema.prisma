@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  phone     BigInt?
+  address   String?
+  apartment String?
+  city      String?
+  zip       Int?
+  permittedPurchases PermittedPurchase[]
+  Orders Order[]
+  createdAt DateTime @default(now())
+  banned    Boolean  @default(false)
+}
+
+model PermittedPurchase {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  orders    Order[]
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  permittedPurchase PermittedPurchase @relation(fields: [permittedPurchaseId], references: [id])
+  userId    Int
+  permittedPurchaseId Int
+  createdAt DateTime @default(now())
+}
+
+model Wine {
+  id        Int      @id @default(autoincrement())
+  name      String
+  description String
+  image     String?
+  price     Int
+  quantityAvailable  Int
+  createdAt DateTime @default(now())
+}

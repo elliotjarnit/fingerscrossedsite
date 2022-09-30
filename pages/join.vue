@@ -4,7 +4,7 @@
         <inputbox value="First Name" v-model="firstName" required></inputbox>
         <inputbox value="Last Name" v-model="lastName" required></inputbox>
         <inputbox value="Phone Number" v-model="phone" required></inputbox>
-        <inputbox value="Street" v-model="street" required></inputbox>
+        <inputbox value="Address" v-model="address" required></inputbox>
         <inputbox value="Apartment" v-model="apartment"></inputbox>
         <inputbox value="City" v-model="city" required></inputbox>
         <inputbox value="Zip Code" v-model="zip" required></inputbox>
@@ -20,7 +20,7 @@ export default {
             firstName: "",
             lastName: "",
             phone: "",
-            street: "",
+            address: "",
             apartment: "",
             city: "",
             zip: ""
@@ -31,7 +31,20 @@ export default {
             console.log(this.email);
         },
         async submit() {
-            console.log(this.email)
+            let response = await $fetch('/api/mailinglist', {
+                method: 'POST',
+                body: {
+                    email: this.email,
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    phone: this.phone,
+                    address: this.street,
+                    apartment: this.apartment,
+                    city: this.city,
+                    zip: this.zip
+                }
+            })
+            console.log(response);
         }
     }
 }
