@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   firstName String?
   lastName  String?
-  phone     BigInt?
+  phone     String?
   address   String?
   apartment String?
   city      String?

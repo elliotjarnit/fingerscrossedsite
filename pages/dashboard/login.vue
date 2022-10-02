@@ -15,14 +15,14 @@ export default {
     methods: {
         async submit() {
             let response = await $fetch('/api/dashboard/auth', {
-                method: 'POST',
-                body: {
-                    auth: this.password
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Basic ' + btoa("admin:" + this.password)
                 }
             })
             if (response) {
                 let auth = useCookie('auth');
-                auth.value = this.password;
+                auth.value = btoa("admin:" + this.password);
                 window.location.href = '/dashboard';
             }
         }
