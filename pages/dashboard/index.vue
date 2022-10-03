@@ -1,5 +1,5 @@
 <script setup>
-let { data: users } = await useFetch('/api/dashboard/users', {
+let { data: users } = await useFetch('/api/users', {
     method: 'GET',
     headers: {
         'Authorization': 'Basic ' + useCookie('auth').value
@@ -17,13 +17,15 @@ users = users.value
                 <tr>
                     <th>Email</th>
                     <th>Name</th>
+                    <th>Phone number</th>
+                    <th>Address</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in users">
                     <td>{{ user.email }}</td>
                     <td>{{ user.firstName + " " + user.lastName }}</td>
-                    <td></td>
+                    <td>{{}}</td>
                 </tr>
             </tbody>
         </table>

@@ -13,11 +13,13 @@ export default defineEventHandler(async (event) => {
             address: body.address || null,
             apartment: body.apartment || null,
             city: body.city || null,
-            zip: parseInt(body.zip) || null
+            zip: body.zip || null
         }})
     } catch (e) {
         console.log("error: " + e)
-        return {error: e.code}
+        event.res.statusCode = 400
+        event.res.statusMessage = e.code
+        event.res.end()
     }
     return mailinglist
 })

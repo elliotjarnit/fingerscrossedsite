@@ -31,7 +31,7 @@ export default {
             console.log(this.email);
         },
         async submit() {
-            let response = await $fetch('/api/mailinglist', {
+            let response = await $fetch('/api/users', {
                 method: 'POST',
                 body: {
                     email: this.email,
@@ -41,7 +41,7 @@ export default {
                     address: this.street,
                     apartment: this.apartment,
                     city: this.city,
-                    zip: this.zip
+                    zip: parseInt(this.zip)
                 }
             })
             console.log(response);
