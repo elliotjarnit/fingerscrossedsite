@@ -4,11 +4,11 @@
     </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
     methods: {
         waitlistRedirect() {
-            window.location.href = '/join'
+            window.location.href = "/join";
         }
     }
 }
