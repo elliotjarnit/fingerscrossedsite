@@ -1,3 +1,5 @@
+// Dash auth required
+
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
