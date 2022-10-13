@@ -50,7 +50,7 @@ model Wine {
   name      String
   description String
   image     String?
-  price     Int
+  price     Float
   quantityAvailable  Int
   permittedPurchases PermittedPurchase[]
   createdAt DateTime @default(now())
