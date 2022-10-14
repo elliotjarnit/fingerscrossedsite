@@ -17,7 +17,7 @@ else {
     let beforeprice = String(product.value.price)
     let value = Number(beforeprice);
     let res = beforeprice.split(".");     
-    if(res.length == 1 || res[1].length < 3) value = value.toFixed(2);
+    if(res.length === 1 || res[1].length < 3) value = value.toFixed(2);
     productprice = value
 }
 </script>
@@ -48,7 +48,7 @@ else {
                             <div style="float:right; display:inline; color: rgba(26,26,26,.5);">$0.00</div>
                         </div>
                         <div class="payment-row" style="border: none;">
-                            <div style="float:left; color:">Total</div>
+                            <div style="float:left;">Total</div>
                             <div style="float:right; display:inline; font-weight: 600;">${{ productprice }}</div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ else {
             </Transition>
         </div>
         <div id="info-side">
-            <form id="payment-form">
+            <form id="payment-form" v-if="phase === 2">
                 <div id="payment-element"></div>
                 <div id="button-cont">
                     <button id="submit" v-on:click.prevent="paymentclick">
@@ -87,6 +87,7 @@ export default {
             productinfoshown: true,
             stripe: null,
             elements: null,
+            phase: 1
         }
     },
     async mounted() {
