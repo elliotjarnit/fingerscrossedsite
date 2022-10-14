@@ -1,4 +1,8 @@
 <script setup>
+// Phase 1 = Ask if address correct
+// Phase 2 = Change address
+// Phase 3 = Payment form
+
 let idfound = true
 let productname = "Unknown"
 let productdescription = "Unknown"
@@ -28,9 +32,11 @@ else {
     </div>
     <div v-else>
         <div id="map-container">
-            <Map address="265 Heavenly Valley Road" id="map-element"></Map>
             <Transition>
-                <div id="product-info" v-if="productinfoshown">
+                <Map :address="address1 + ' ' + city" id="map-element" v-if="showmap"></Map>
+            </Transition>
+            <Transition>
+                <div id="product-info" v-if="phase==3">
                     <div id="product-image-div">
                         <img :src="productimage" />
                         <div>
@@ -56,10 +62,45 @@ else {
             </Transition>
         </div>
         <div id="info-side">
-            <form id="payment-form" v-if="phase === 2">
+            <Transition>
+                <form id="address-form" v-if="phase === 1 || phase === 2">
+                    <div class="form-fields">
+                        <inputbox value="Address Line 1" placeholder="Street address" :disabled="phase===1"
+                            v-model="address1"></inputbox>
+                        <inputbox value="Address Line 2" placeholder="Apartment, suite, etc (optional)"
+                            :disabled="phase===1" v-model="address2"></inputbox>
+                        <inputbox value="City" placeholder="City name" :disabled="phase===1" v-model="city">
+                        </inputbox>
+                        <stateselector :disabled="phase===1" v-model="state"></stateselector>
+                        <inputbox value="ZIP" placeholder="ZIP Code" :disabled="phase===1" v-model="zip">
+                        </inputbox>
+                        <div class="bigtext" style="margin-top: 20px;" v-if="phase===1">
+                            Is this address correct?
+                        </div>
+                        <div style="display:flex;" v-if="phase===1">
+                            <button class="submit" v-on:click.prevent="addressclickyes"
+                                style="margin-right: 10px; margin-top: 20px;">
+                                <span id="button-text">Yes</span>
+                            </button>
+                            <button class="submit submit-secondary" v-on:click.prevent="addressclickno"
+                                style="margin-left: 10px; margin-top: 20px;">
+                                <span id="button-text">No</span>
+                            </button>
+                        </div>
+                        <Transition>
+                            <div style="display:flex;" v-if="phase===2">
+                                <button class="submit" v-on:click.prevent="addressclickyes" style="margin-top: 20px;">
+                                    <span id="button-text">Next</span>
+                                </button>
+                            </div>
+                        </Transition>
+                    </div>
+                </form>
+            </Transition>
+            <form id="payment-form" v-if="phase === 3">
                 <div id="payment-element"></div>
                 <div id="button-cont">
-                    <button id="submit" v-on:click.prevent="paymentclick">
+                    <button class="submit" v-on:click.prevent="paymentclick">
                         <div class="spinner hidden" id="spinner"></div>
                         <span id="button-text">Pay</span>
                     </button>
@@ -80,18 +121,45 @@ export default {
     head() {
         return {
             script: [{src: "https://js.stripe.com/v3/"}],
+            title: "Purchase"
         }
     },
     data() {
         return {
-            productinfoshown: true,
             stripe: null,
             elements: null,
-            phase: 1
+            phase: 1,
+            address1: "",
+            address2: "",
+            state: "",
+            zip: "",
+            city: "",
+            showmap: false,
         }
     },
     async mounted() {
-        if (this.idfound) {
+        let user = await $fetch('/api/users/' + this.pp.userId, { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + btoa(":" + this.pp.id)
+            }
+        })
+        this.address1 = user.address || ""
+        this.address2 = user.apartment || ""
+        this.zip = user.zip || ""
+        this.city = user.city || ""
+        this.state = user.state || ""
+        this.showmap = true
+    },
+    methods: {
+        addressclickno() {
+            this.phase = 2
+            this.showmap = false
+        },
+        async addressclickyes() {
+            this.phase = 3
+            this.showmap = true
             this.stripe = await Stripe("pk_test_51LrloVKguvQ0jeo2Bar4pxtcIdfqVvd6BKRjGKgr0JMfBz2KTIEAj3cwebtuZH1KJs7RbMU9cYcED8FhBuPiIWYD00DSdMNbsl");
             let response = await useFetch("/api/payments/intents", { method: "POST",
                 body: JSON.stringify({
@@ -115,9 +183,7 @@ export default {
             // const addressElement = await elements.create("address");
             // await addressElement.mount("#address-element");
             await paymentElement.mount("#payment-element");
-        }
-    },
-    methods: {
+        },
         async paymentclick() {
             let elements = this.elements
             const { error } = await this.stripe.confirmPayment({
@@ -136,6 +202,12 @@ export default {
     }
 }
 </script>
+
+<style>
+.body {
+    background-color: #B6E59E;
+}
+</style>
 
 <style scoped>
 #map-container {
@@ -211,11 +283,27 @@ img {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.bigtext {
+    text-align: center;
+    font-size: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: 600;
+}
+
 #payment-form {
     padding: 60px 150px;
 }
 
-#submit {
+#address-form {
+    padding: 60px 150px;
+}
+
+.form-fields {
+    display: flex;
+    flex-flow: column;
+}
+
+.submit {
     border-radius: 6px;
     width: 100%;
     background-color: #6772e5;
@@ -232,12 +320,21 @@ img {
     transition: all 0.2s ease;
 }
 
-#submit:hover {
+.submit-secondary {
+    background-color: #808080;
+}
+
+.submit-secondary:hover {
+    background-color: #A9A9A9 !important;
+}
+
+.submit:hover {
     background-color: #7795f8;
 }
 
 #info-side {
     position: absolute;
+    background-color: white;
     right: 0;
     top: 0;
     overflow: hidden;
@@ -266,7 +363,7 @@ img {
 
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 1s ease;
+    transition: opacity 0.5s ease;
 }
 
 .v-enter-from,

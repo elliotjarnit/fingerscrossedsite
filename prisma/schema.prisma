@@ -20,6 +20,7 @@ model User {
   apartment String?
   city      String?
   zip       Int?
+  state     String?
   permittedPurchases PermittedPurchase[]
   Orders Order[]
   createdAt DateTime @default(now())
@@ -33,6 +34,7 @@ model PermittedPurchase {
   order     Order?
   wine      Wine     @relation(fields: [wineId], references: [id])
   wineId    Int
+  completed Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 

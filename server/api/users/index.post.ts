@@ -13,7 +13,8 @@ export default defineEventHandler(async (event) => {
             address: body.address || null,
             apartment: body.apartment || null,
             city: body.city || null,
-            zip: body.zip || null
+            zip: body.zip || null,
+            state: body.state || null
         }})
     } catch (e) {
         console.log("error: " + e)

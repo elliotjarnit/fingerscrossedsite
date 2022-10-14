@@ -7,6 +7,7 @@
         <inputbox value="Address" v-model="address" required></inputbox>
         <inputbox value="Apartment" v-model="apartment"></inputbox>
         <inputbox value="City" v-model="city" required></inputbox>
+        <stateselector v-model="state" required></stateselector>
         <inputbox value="Zip Code" v-model="zip" required></inputbox>
         <button type="submit" v-on:click.prevent="submit">Submit</button>
     </form>
@@ -23,7 +24,8 @@ export default {
             address: "",
             apartment: "",
             city: "",
-            zip: ""
+            zip: "",
+            state: ""
         }
     },
     methods: {
@@ -38,9 +40,10 @@ export default {
                     firstName: this.firstName,
                     lastName: this.lastName,
                     phone: this.phone,
-                    address: this.street,
+                    address: this.address,
                     apartment: this.apartment,
                     city: this.city,
+                    state: this.state,
                     zip: parseInt(this.zip)
                 }
             })
