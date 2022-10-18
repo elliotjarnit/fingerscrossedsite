@@ -25,6 +25,7 @@ model User {
   Orders Order[]
   createdAt DateTime @default(now())
   banned    Boolean  @default(false)
+  vip       Boolean  @default(false)
 }
 
 model PermittedPurchase {

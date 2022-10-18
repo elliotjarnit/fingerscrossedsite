@@ -137,6 +137,9 @@ export default {
             showmap: false,
         }
     },
+    beforeMount() {
+        if (!this.idfound) window.location.href = "/"
+    },
     async mounted() {
         let user = await $fetch('/api/users/' + this.pp.userId, { 
             method: 'GET',
@@ -202,12 +205,6 @@ export default {
     }
 }
 </script>
-
-<style>
-.body {
-    background-color: #B6E59E;
-}
-</style>
 
 <style scoped>
 #map-container {
