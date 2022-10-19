@@ -6,6 +6,7 @@ let { data: users } = await useFetch('/api/users', {
     }
 });
 definePageMeta({  layout: "dashboard",});
+let staticusers = users.value
 users = users.value
 console.log(users)
 </script>
@@ -13,6 +14,11 @@ console.log(users)
 <template>
     <div class="main">
         <div class="table">
+            <div class="search">
+                <div class="search-input">
+                    <input type="text" placeholder="Search" v-model="search" v-on:input="runSearch" />
+                </div>
+            </div>
             <div class="row header">
                 <div class="column header">
                     <div class="clickable" @click="sortClick(0)">
@@ -63,8 +69,9 @@ console.log(users)
                 <div class="column">{{user.phone}}</div>
                 <div class="column small">
                     <div v-if="user.vip" class="vip">VIP</div>
+                    <div v-if="user.banned" class="banned">BANNED</div>
                 </div>
-                <div class="column small icon" style="display: flex;">
+                <div class="column smaller icon" style="display: flex;">
                     <more-icon class="clickable" />
                 </div>
             </div>
@@ -82,13 +89,35 @@ export default {
                 name: 0,
                 email: 0,
                 phone: 0
-            }
+            },
+            search: ""
         }
     },
     mounted() {
         this.sortFields()
     },
     methods: {
+        async runSearch() {
+            let response = JSON.parse(JSON.stringify(this.staticusers))
+            let filtered = []
+            for (let i = 0; i < response.length; i++) {
+                if (response[i].firstName.toLowerCase().includes(this.search.toLowerCase()) || response[i].lastName.toLowerCase().includes(this.search.toLowerCase()) || response[i].email.toLowerCase().includes(this.search.toLowerCase()) || response[i].phone.toLowerCase().includes(this.search.toLowerCase())) {
+                    filtered.push(response[i])
+                }
+            }
+            this.users = filtered
+            this.sortFields()
+        },
+        async refreshData() {
+            let response = await useFetch('/api/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Basic ' + useCookie('auth').value
+                }
+            });
+            this.users = response.data.value
+            this.sortFields()
+        },
         sortClick(column) {
             switch (column) {
                 case 0:
@@ -160,6 +189,7 @@ export default {
             } else if (this.sort.phone === 2) {
                 this.users.sort((a, b) => b.phone.localeCompare(a.phone))
             }
+            this.$forceUpdate();
         }
     },
 }
@@ -179,6 +209,27 @@ export default {
     cursor: pointer;
 }
 
+.search {
+    margin: 20px 0;
+}
+
+.search-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    display: inline;
+}
+
+.search-input input {
+    outline: none;
+    border: none;
+    padding: 10px;
+    width: 400px;
+}
+
 .table {
     position: absolute;
     top: 0;
@@ -186,7 +237,7 @@ export default {
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 20px 40px;
     font-family: 'Roboto', sans-serif;
 
 }
@@ -202,6 +253,10 @@ export default {
 }
 
 .small {
+    width: 30%;
+}
+
+.smaller {
     width: 20%;
 }
 
@@ -256,5 +311,20 @@ export default {
     border-radius: 15px;
     font-size: 12px;
     font-weight: 600;
+    vertical-align: middle;
+    padding: 0 10px;
+}
+
+.banned {
+    background-color: red;
+    color: white;
+    margin: 10px 0;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    padding: 0 10px;
 }
 </style>
