@@ -10,11 +10,21 @@
                         <user-icon />
                     </span>
                     <span class="text">
-                        Users
+                        Home
                     </span>
                 </span>
             </div>
             <div :class="{ 'sidebar-content-item': true, 'active': active === 1 }">
+                <span class="content-title" @click="navigateTo('/dashboard/users')">
+                    <span class="icon">
+                        <user-icon />
+                    </span>
+                    <span class="text">
+                        Users
+                    </span>
+                </span>
+            </div>
+            <div :class="{ 'sidebar-content-item': true, 'active': active === 2 }">
                 <span class="content-title" @click="navigateTo('/dashboard/orders')">
                     <span class="icon">
                         <order-icon />
@@ -47,8 +57,10 @@ export default {
         console.log(curroute)
         if (curroute == 'dashboard') {
             this.active = 0
-        } else if (curroute == 'dashboard/orders') {
+        } else if (curroute == 'dashboard/users') {
             this.active = 1
+        } else if (curroute == 'dashboard/orders') {
+            this.active = 2
         }
     },
     methods: {
