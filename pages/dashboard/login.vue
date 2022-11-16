@@ -20,10 +20,12 @@ export default {
                     'Authorization': 'Basic ' + btoa("admin:" + this.password)
                 }
             })
+            console.log(response)
             if (response) {
+                
                 let auth = useCookie('auth');
                 auth.value = btoa("admin:" + this.password);
-                window.location.href = '/dashboard';
+                this.$router.push('/dashboard');
             }
         }
     }

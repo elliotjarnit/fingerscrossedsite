@@ -26,7 +26,7 @@ console.log(users)
                             ID
                         </span>
                         <span :class="{ icon: true, hidden: sort.id === 0, flipped: sort.id === 2 }">
-                            <arrow-icon />
+                            <SVGIcon icon="arrow" />
                         </span>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ console.log(users)
                             Name
                         </span>
                         <span class="icon" :class="{ icon: true, hidden: sort.name === 0, flipped: sort.name === 2 }">
-                            <arrow-icon />
+                            <SVGIcon icon="arrow" />
                         </span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ console.log(users)
                             Email
                         </span>
                         <span class="icon" :class="{ icon: true, hidden: sort.email === 0, flipped: sort.email === 2 }">
-                            <arrow-icon />
+                            <SVGIcon icon="arrow" />
                         </span>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ console.log(users)
                             Phone
                         </span>
                         <span class="icon" :class="{ icon: true, hidden: sort.phone === 0, flipped: sort.phone === 2 }">
-                            <arrow-icon />
+                            <SVGIcon icon="arrow" />
                         </span>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ console.log(users)
                     <div v-if="user.banned" class="banned">BANNED</div>
                 </div>
                 <div class="column smaller icon" style="display: flex;">
-                    <more-icon class="clickable" />
+                    <SVGIcon icon="more" class="clickable" />
                 </div>
             </div>
         </div>

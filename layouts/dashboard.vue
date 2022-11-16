@@ -1,68 +1,27 @@
 <template>
-    <div class="sidebar">
-        <div class="sidebar-content-item" style="font-weight: 600; font-size: 1em;">
-            FINGERS CROSSED
-        </div>
-        <div class="sidebar-content">
-            <div :class="{ 'sidebar-content-item': true, 'active': active === 0 }">
-                <span class="content-title" @click="navigateTo('/dashboard/')">
-                    <span class="icon">
-                        <user-icon />
-                    </span>
-                    <span class="text">
-                        Home
-                    </span>
-                </span>
+    <div>
+        <div class="sidebar">
+            <div class="sidebar-content-item" style="font-weight: 600; font-size: 1em;">
+                FINGERS CROSSED
             </div>
-            <div :class="{ 'sidebar-content-item': true, 'active': active === 1 }">
-                <span class="content-title" @click="navigateTo('/dashboard/users')">
-                    <span class="icon">
-                        <user-icon />
-                    </span>
-                    <span class="text">
-                        Users
-                    </span>
-                </span>
-            </div>
-            <div :class="{ 'sidebar-content-item': true, 'active': active === 2 }">
-                <span class="content-title" @click="navigateTo('/dashboard/orders')">
-                    <span class="icon">
-                        <order-icon />
-                    </span>
-                    <span class="text">
-                        Orders
-                    </span>
-                </span>
-            </div>
-            <div class="sidebar-content-item" @click="logout"
-                style="position: absolute; bottom:0; padding-bottom: 1em; font-family:Verdana, Geneva, Tahoma, sans-serif">
-                Logout
+            <div class="sidebar-content">
+                <SidebarItem icon="user" title="Home" route="/dashboard" />
+                <SidebarItem icon="user" title="Users" route="/dashboard/users" />
+                <SidebarItem icon="order" title="Orders" route="/dashboard/orders" />
+                <div class="sidebar-content-item" @click="logout"
+                    style="position: absolute; bottom:0; padding-bottom: 1em; font-family:Verdana, Geneva, Tahoma, sans-serif">
+                    Logout
+                </div>
             </div>
         </div>
-    </div>
-    <div class="rest">
-        <slot />
+        <div class="rest">
+            <slot />
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            active: 0
-        }
-    },
-    mounted() {
-        let curroute = this.$route.name
-        console.log(curroute)
-        if (curroute == 'dashboard') {
-            this.active = 0
-        } else if (curroute == 'dashboard/users') {
-            this.active = 1
-        } else if (curroute == 'dashboard/orders') {
-            this.active = 2
-        }
-    },
     methods: {
         logout() {
             let auth = useCookie('auth')
@@ -73,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .sidebar {
     position: absolute;
     top: 0;
@@ -116,10 +75,9 @@ export default {
 
 .icon {
     position: relative;
-    top: -2px;
 }
 
-.icon svg {
+.icon object {
     width: 20px;
     height: 20px;
     vertical-align: middle;
