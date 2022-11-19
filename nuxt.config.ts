@@ -3,6 +3,14 @@ export default defineNuxtConfig({
   typescript: {
       shim: false
   },
+  buildModules: [
+    '@nuxtjs/google-fonts'
+  ],
+  googleFonts: {
+    families: {
+      Lato: true
+    }
+  },
   app: { 
     head: { 
       title: "Fingers Crossed Wine",
