@@ -45,6 +45,10 @@ model Order {
   permittedPurchase PermittedPurchase @relation(fields: [permittedPurchaseId], references: [id])
   userId    Int
   permittedPurchaseId String @unique
+  paymentIntentSecret String @unique
+  wine      Wine     @relation(fields: [wineId], references: [id])
+  wineId    Int
+  status    String
   createdAt DateTime @default(now())
 }
 
@@ -53,8 +57,9 @@ model Wine {
   name      String
   description String
   image     String?
-  price     Float
+  price     String
   quantityAvailable  Int
   permittedPurchases PermittedPurchase[]
+  Orders Order[]
   createdAt DateTime @default(now())
 }
