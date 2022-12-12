@@ -31,16 +31,5 @@ export default defineEventHandler(async (event) => {
         },
     });
 
-    // Create order
-    const order = await prisma.order.create({
-        data: {
-            permittedPurchaseId: ppurchase.id,
-            userId: ppurchase.userId,
-            status: "pending",
-            paymentIntentSecret: paymentIntent.client_secret,
-            wineId: wine.id,
-        }
-    })
-
     return {client_secret: paymentIntent.client_secret}
 });
