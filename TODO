@@ -1,7 +1,16 @@
-Make it so that you cannot access the login page when you are logged in
-Make everything pretty
-Password changer?
-Add rate limiting
-User creation validation server-side
-Better error handeling client/server side
-proper map attribution legal stuff
+[x] Make it so that you cannot access the login page when you are logged in
+[ ] Make everything pretty
+[ ] Add rate limiting
+[ ] User creation validation server-side
+[ ] User creation validation client-side
+[ ] Better error handeling client/server side
+[X] proper map attribution legal stuff
+[x] wine creation dashboard
+[ ] fedex order exporter
+[x] style login page
+[ ] taxes ):
+[ ] Dashboard filters
+[ ] Better security for authed requests
+[ ] Dashboard home page
+[ ] Mobile responsiveness
+[ ] Pagination

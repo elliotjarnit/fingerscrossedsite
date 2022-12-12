@@ -47,7 +47,7 @@ export default {
         } else if (this.hidden) {
             this.type = 'password'
         }
-        setInterval(() => {
+        setTimeout(() => {
             this.$emit('update:modelValue', this.$refs.input.value);
         }, 50);
     }

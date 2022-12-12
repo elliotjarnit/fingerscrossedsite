@@ -170,6 +170,7 @@ export default {
                 }),
             });
             const client_secret = response.data.value.client_secret
+            console.log("Client Secret", client_secret)
             const appearance = {
                 theme: 'flat',
             };
@@ -334,8 +335,9 @@ img {
     background-color: white;
     right: 0;
     top: 0;
-    overflow: hidden;
-    width: 60%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    width:  60%;
     height: 100%;
     box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
 }

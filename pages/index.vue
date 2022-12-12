@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="homepage">
         <div class="header">
             <div class="section">
                 <SVGIcon icon="instagram" size="23px" link="http://instagram.com/fingerscrossedwine" clickable />
@@ -11,7 +11,12 @@
             </div>
         </div>
         <div class="page">
-            <button class="waitlist" @click="waitlistRedirect">Join Waitlist</button>
+            <div class="carousel">
+                <img class="carousel-item active" src="~/assets/carousel/1.jpg" ref="carousel-1" />
+                <img class="carousel-item" src="~/assets/carousel/2.jpg" ref="carousel-2" />
+                <img class="carousel-item lastactive" src="~/assets/carousel/3.jpg" ref="carousel-3" />
+                <button class="waitlist" @click="waitlistRedirect">Join Waitlist</button>
+            </div>
         </div>
         <div class="footer">
             <div class="footer-items">
@@ -39,7 +44,13 @@
     </div>
 </template>
 
-<style lang="scss">
+<style>
+body {
+    overflow-x: hidden;
+}
+</style>
+
+<style lang="scss" scoped>
 .header {
     width: 100vw;
     height: 75px;
@@ -62,8 +73,6 @@
 }
 
 .page {
-    box-sizing: border-box;
-    padding: 150px;
     width: 100vw;
     height: 100vh;
     z-index: 1;
@@ -117,6 +126,49 @@
     }
 }
 
+.carousel {
+    height: 100%;
+    width: 100%;
+    .carousel-item {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        border: 0;
+        transform: translateX(-100%);
+        transition: transform 0.5s ease;
+        opacity: 0;
+    }
+    .active {
+        transform: translateX(0);
+        z-index: 100;
+        opacity: 1;
+    }
+    .lastactive {
+        transform: translateX(100%);
+        opacity: 1;
+    }
+    .waitlist {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 200;
+        transform: translate(-50%, -50%);
+        background-color: #F2F2F2;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-family: "Lato";
+        font-weight: 300;
+        font-size: 1rem;
+        color: #525356;
+        cursor: pointer;
+        &:hover {
+            background-color: #E5E5E5;
+        }
+    }
+}
+
 .credits {
     gap: 0px !important;
     font-weight: 200;
@@ -137,6 +189,26 @@ export default {
                 {icon: "twitter", link: "http://twitter.com/@NikolasKrankl"},
             ]
         }
+    },
+    mounted() {
+        let item1 = this.$refs["carousel-1"];
+        let item2 = this.$refs["carousel-2"];
+        let item3 = this.$refs["carousel-3"];
+        let items = [item1, item2, item3];
+
+        let i = 0;
+        setInterval(() => {
+            for (let item of items) {
+                item.classList.remove("active");
+                item.classList.remove("lastactive");
+            }
+            items[i].classList.add("lastactive");
+            i++;
+            if (i >= items.length) {
+                i = 0;
+            }
+            items[i].classList.add("active");
+        }, 3000);
     },
     methods: {
         waitlistRedirect() {

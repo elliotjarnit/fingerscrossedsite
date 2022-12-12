@@ -5,9 +5,10 @@
                 FINGERS CROSSED
             </div>
             <div class="sidebar-content">
-                <SidebarItem icon="user" title="Home" route="/dashboard" />
+                <SidebarItem icon="home" title="Home" route="/dashboard" />
                 <SidebarItem icon="user" title="Users" route="/dashboard/users" />
                 <SidebarItem icon="order" title="Orders" route="/dashboard/orders" />
+                <SidebarItem icon="wine" title="Wines" route="/dashboard/wines" />
                 <div class="sidebar-content-item" @click="logout"
                     style="position: absolute; bottom:0; padding-bottom: 1em; font-family:Verdana, Geneva, Tahoma, sans-serif">
                     Logout

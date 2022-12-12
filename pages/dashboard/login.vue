@@ -12,6 +12,9 @@ export default {
             password: ""
         }
     },
+    mounted() {
+        
+    },
     methods: {
         async submit() {
             let response = await $fetch('/api/dashboard/auth', {
